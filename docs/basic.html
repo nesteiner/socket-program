@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2021-02-01 一 20:43 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>学习套接字</title>
+<meta name="generator" content="Org mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="http://gongzhitaao.org/orgcss/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">学习套接字</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org7303bd6">1. TCP 网络套接字</a>
+<ul>
+<li><a href="#org55f52e5">1.1. 说明</a>
+<ul>
+<li><a href="#orgd4fc13f">1.1.1. 程序步骤</a></li>
+<li><a href="#org1babcbb">1.1.2. 项目结构</a></li>
+</ul>
+</li>
+<li><a href="#orga6ca415">1.2. 知识点说明</a>
+<ul>
+<li><a href="#orgd6184a3">1.2.1. 部署</a>
+<ul>
+<li><a href="#org74ed899"><span class="done DONE">DONE</span> 部署服务端</a></li>
+<li><a href="#org9ef1058"><span class="done DONE">DONE</span> 部署客户端</a></li>
+</ul>
+</li>
+<li><a href="#org6aeea92">1.2.2. 连接</a>
+<ul>
+<li><a href="#org7bec545"><span class="done DONE">DONE</span> 服务端接收连接</a></li>
+<li><a href="#org16eab5d"><span class="done DONE">DONE</span> 客户端连接服务端</a></li>
+</ul>
+</li>
+<li><a href="#orgffb2285">1.2.3. 传输</a>
+<ul>
+<li><a href="#orgcc67c20">发送数据</a></li>
+<li><a href="#org6a6c1c1">接收数据</a></li>
+</ul>
+</li>
+<li><a href="#orgad1d19f">1.2.4. 关闭</a></li>
+</ul>
+</li>
+<li><a href="#orgf6ecccb">1.3. 代码测试</a>
+<ul>
+<li><a href="#orgd0d8a46">1.3.1. 服务端程序</a></li>
+<li><a href="#orge3bd030">1.3.2. 客户端程序</a></li>
+<li><a href="#orgc6b68c2">1.3.3. build and run</a></li>
+<li><a href="#org14bfce8">1.3.4. 运行结果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org5481c88">2. UDP 网络套接字</a></li>
+<li><a href="#orge9688df">3. 本地套接字</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7303bd6" class="outline-2">
+<h2 id="org7303bd6"><span class="section-number-2">1</span> TCP 网络套接字</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+TODO mindmap image here
+</p>
+</div>
+<div id="outline-container-org55f52e5" class="outline-3">
+<h3 id="org55f52e5"><span class="section-number-3">1.1</span> 说明</h3>
+<div class="outline-text-3" id="text-1-1">
+</div>
+<div id="outline-container-orgd4fc13f" class="outline-4">
+<h4 id="orgd4fc13f"><span class="section-number-4">1.1.1</span> 程序步骤</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+TCP套接字程序大概有4个步骤，分别是  
+</p>
+<ol class="org-ol">
+<li>部署 <b>deploy</b></li>
+<li>连接 <b>connect</b></li>
+<li>传输 <b>transport</b></li>
+<li>关闭 <b>shutdown</b></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org1babcbb" class="outline-4">
+<h4 id="org1babcbb"><span class="section-number-4">1.1.2</span> 项目结构</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+在本目录下，有
+</p>
+<ul class="org-ul">
+<li>lib/
+<ul class="org-ul">
+<li>tcp.h</li>
+</ul></li>
+<li>src/
+<ul class="org-ul">
+<li>tcp.cc</li>
+</ul></li>
+<li>client.cc</li>
+<li>server.cc</li>
+<li>Makefile</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orga6ca415" class="outline-3">
+<h3 id="orga6ca415"><span class="section-number-3">1.2</span> 知识点说明</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="outline-container-orgd6184a3" class="outline-4">
+<h4 id="orgd6184a3"><span class="section-number-4">1.2.1</span> 部署</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+要创建一个套接字描述符，需要调用
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #204a87;">int</span> <span style="color: #a40000;">socket</span>(<span style="color: #204a87;">int</span> <span style="color: #b35000;">domain</span>, <span style="color: #204a87;">int</span> <span style="color: #b35000;">type</span>, <span style="color: #204a87;">int</span> <span style="color: #b35000;">protocol</span>);
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org74ed899" class="outline-5">
+<h5 id="org74ed899"><span class="done DONE">DONE</span> 部署服务端</h5>
+<div class="outline-text-5" id="text-org74ed899">
+<p>
+这里做点简化，/bind/, <i>listen</i> 一条龙服务
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #204a87;">int</span> <span style="color: #a40000;">server</span>(<span style="color: #346604;">const</span> <span style="color: #204a87;">char</span> * <span style="color: #b35000;">ip</span>, <span style="color: #204a87;">unsigned</span> <span style="color: #204a87;">int</span> <span style="color: #b35000;">port</span>);
+
+<span style="color: #204a87;">int</span> <span style="color: #204a87; font-weight: bold;">tcp</span>::<span style="color: #a40000;">server</span>(<span style="color: #346604;">const</span> <span style="color: #204a87;">char</span> *<span style="color: #b35000;">ip</span>, <span style="color: #204a87;">unsigned</span> <span style="color: #204a87;">int</span> <span style="color: #b35000;">port</span>) {
+  <span style="color: #204a87;">int</span> <span style="color: #b35000;">sockfd</span> = socket(AF_INET, SOCK_STREAM, 0);
+
+  <span style="color: #346604;">struct</span> <span style="color: #204a87;">sockaddr_in</span> <span style="color: #b35000;">address</span>;
+  address.sin_family = AF_INET;
+  address.sin_addr.s_addr = inet_addr(ip);
+  address.sin_port = htons(port);
+
+  ::bind(sockfd, (<span style="color: #346604;">struct</span> <span style="color: #204a87;">sockaddr</span> *)&amp;address, <span style="color: #346604;">sizeof</span>(address));
+  ::listen(sockfd, 5);
+
+  <span style="color: #346604;">return</span> sockfd;
+}
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org9ef1058" class="outline-5">
+<h5 id="org9ef1058"><span class="done DONE">DONE</span> 部署客户端</h5>
+<div class="outline-text-5" id="text-org9ef1058">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #204a87;">int</span> <span style="color: #a40000;">client</span>(<span style="color: #204a87;">int</span> <span style="color: #b35000;">domain</span>=AF_INET);
+
+<span style="color: #204a87;">int</span> <span style="color: #204a87; font-weight: bold;">tcp</span>::<span style="color: #a40000;">client</span>(<span style="color: #204a87;">int</span> <span style="color: #b35000;">domain</span>) {
+  <span style="color: #204a87;">int</span> <span style="color: #b35000;">sockfd</span> = socket(domain, SOCK_STREAM, 0);
+  <span style="color: #346604;">return</span> sockfd;
+}
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org6aeea92" class="outline-4">
+<h4 id="org6aeea92"><span class="section-number-4">1.2.2</span> 连接</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+服务端接受套接字的连接，并生成一个 <i>新的套接符描述符</i> 来处理与客服端的数据交互  
+客户端向服务端发起连接，进行数据传输
+</p>
+</div>
+<div id="outline-container-org7bec545" class="outline-5">
+<h5 id="org7bec545"><span class="done DONE">DONE</span> 服务端接收连接</h5>
+<div class="outline-text-5" id="text-org7bec545">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #204a87;">int</span> <span style="color: #a40000;">accept</span>(<span style="color: #204a87;">int</span> <span style="color: #b35000;">serverfd</span>);
+
+<span style="color: #204a87;">int</span> <span style="color: #204a87; font-weight: bold;">tcp</span>::<span style="color: #a40000;">accept</span>(<span style="color: #204a87;">int</span> <span style="color: #b35000;">serverfd</span>) {
+  <span style="color: #204a87;">int</span> <span style="color: #b35000;">connfd</span> = ::accept(serverfd, <span style="color: #204a87; font-weight: bold;">NULL</span>, <span style="color: #204a87; font-weight: bold;">NULL</span>);
+  <span style="color: #346604;">return</span> connfd;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org16eab5d" class="outline-5">
+<h5 id="org16eab5d"><span class="done DONE">DONE</span> 客户端连接服务端</h5>
+<div class="outline-text-5" id="text-org16eab5d">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #204a87;">int</span> <span style="color: #a40000;">connect</span>(<span style="color: #204a87;">int</span> <span style="color: #b35000;">connfd</span>, <span style="color: #346604;">const</span> <span style="color: #204a87;">char</span> * <span style="color: #b35000;">ip</span>, <span style="color: #204a87;">unsigned</span> <span style="color: #204a87;">int</span> <span style="color: #b35000;">port</span>);
+
+<span style="color: #204a87;">int</span> <span style="color: #204a87; font-weight: bold;">tcp</span>::<span style="color: #a40000;">connect</span>(<span style="color: #204a87;">int</span> <span style="color: #b35000;">sockfd</span>, <span style="color: #346604;">const</span> <span style="color: #204a87;">char</span> *<span style="color: #b35000;">ip</span>, <span style="color: #204a87;">unsigned</span> <span style="color: #204a87;">int</span> <span style="color: #b35000;">port</span>) {
+  <span style="color: #346604;">struct</span> <span style="color: #204a87;">sockaddr_in</span> <span style="color: #b35000;">address</span>;
+  address.sin_family = AF_INET;
+  address.sin_addr.s_addr = inet_addr(ip);
+  address.sin_port = htons(port);
+
+  <span style="color: #204a87;">int</span> <span style="color: #b35000;">result</span> = ::connect(sockfd, (<span style="color: #346604;">struct</span> <span style="color: #204a87;">sockaddr</span> *)&amp;address, <span style="color: #346604;">sizeof</span>(address));
+
+  <span style="color: #346604;">return</span> result;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgffb2285" class="outline-4">
+<h4 id="orgffb2285"><span class="section-number-4">1.2.3</span> 传输</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+连接好服务端和客户端后，再是进行双方的数据传输
+</p>
+</div>
+<div id="outline-container-orgcc67c20" class="outline-5">
+<h5 id="orgcc67c20">发送数据</h5>
+<div class="outline-text-5" id="text-orgcc67c20">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #346604;">const</span> <span style="color: #346604;">auto</span> send = ::send;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org6a6c1c1" class="outline-5">
+<h5 id="org6a6c1c1">接收数据</h5>
+<div class="outline-text-5" id="text-org6a6c1c1">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #346604;">const</span> <span style="color: #346604;">auto</span> recv = ::recv;
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgad1d19f" class="outline-4">
+<h4 id="orgad1d19f"><span class="section-number-4">1.2.4</span> 关闭</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<p>
+结束两端的交互后，可以把套接字关闭，这里不用 <b>close</b> ，而用 <b>shutdown</b> 
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #346604;">const</span> <span style="color: #346604;">auto</span> shutdown = ::shutdwon;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgf6ecccb" class="outline-3">
+<h3 id="orgf6ecccb"><span class="section-number-3">1.3</span> 代码测试</h3>
+<div class="outline-text-3" id="text-1-3">
+</div>
+<div id="outline-container-orgd0d8a46" class="outline-4">
+<h4 id="orgd0d8a46"><span class="section-number-4">1.3.1</span> 服务端程序</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #346604;">const</span> <span style="color: #204a87;">int</span> <span style="color: #b35000;">buffer_size</span> = 1024;
+
+<span style="color: #204a87;">int</span> <span style="color: #a40000;">main</span>() {
+  <span style="color: #204a87;">int</span> <span style="color: #b35000;">server</span> = <span style="color: #204a87; font-weight: bold;">tcp</span>::server(<span style="color: #5c3566;">"127.0.0.1"</span>, 9999);
+  <span style="color: #204a87;">int</span> <span style="color: #b35000;">connfd</span> = <span style="color: #204a87; font-weight: bold;">tcp</span>::accept(server);
+
+  <span style="color: #204a87;">char</span> <span style="color: #b35000;">buffer</span>[buffer_size];
+  memset(buffer, 0, <span style="color: #346604;">sizeof</span>(buffer));
+  <span style="color: #204a87;">int</span> <span style="color: #b35000;">result</span> = 0;
+
+  result = <span style="color: #204a87; font-weight: bold;">tcp</span>::recv(connfd, buffer, <span style="color: #346604;">sizeof</span>(buffer), 0);
+  <span style="color: #204a87; font-weight: bold;">std</span>::cout &lt;&lt; <span style="color: #5c3566;">"[server] recv from client: "</span> &lt;&lt; <span style="color: #204a87; font-weight: bold;">std</span>::string(buffer, result) &lt;&lt; <span style="color: #204a87; font-weight: bold;">std</span>::endl;
+  sprintf(buffer, <span style="color: #5c3566;">"fuck you"</span>);
+  <span style="color: #204a87; font-weight: bold;">tcp</span>::send(connfd, buffer, strlen(buffer), 0);
+  <span style="color: #204a87; font-weight: bold;">std</span>::cout &lt;&lt; <span style="color: #5c3566;">"[server] send done"</span> &lt;&lt; <span style="color: #204a87; font-weight: bold;">std</span>::endl;
+
+  <span style="color: #204a87; font-weight: bold;">tcp</span>::shutdown(connfd, 2);
+  <span style="color: #204a87; font-weight: bold;">tcp</span>::shutdown(server, 2);
+  <span style="color: #346604;">return</span> 0;
+}
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge3bd030" class="outline-4">
+<h4 id="orge3bd030"><span class="section-number-4">1.3.2</span> 客户端程序</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #346604;">const</span> <span style="color: #204a87;">int</span> <span style="color: #b35000;">buffer_size</span> = 1024;
+
+<span style="color: #204a87;">int</span> <span style="color: #a40000;">main</span>() {
+  <span style="color: #204a87;">int</span> <span style="color: #b35000;">client</span> = <span style="color: #204a87; font-weight: bold;">tcp</span>::client();
+  <span style="color: #204a87; font-weight: bold;">tcp</span>::connect(client, <span style="color: #5c3566;">"127.0.0.1"</span>, 9999);
+
+  <span style="color: #204a87;">char</span> <span style="color: #b35000;">buffer</span>[buffer_size];
+  memset(buffer, 0, <span style="color: #346604;">sizeof</span>(buffer));
+  <span style="color: #5f615c; font-style: italic;">// </span><span style="color: #5f615c; font-style: italic;">1. read</span>
+  <span style="color: #5f615c; font-style: italic;">// </span><span style="color: #5f615c; font-style: italic;">2. send</span>
+  <span style="color: #204a87;">int</span> <span style="color: #b35000;">result</span> = 0;
+
+  sprintf(buffer, <span style="color: #5c3566;">"hello world"</span>);
+  result = <span style="color: #204a87; font-weight: bold;">tcp</span>::send(client, buffer, strlen(buffer), 0);
+  <span style="color: #204a87; font-weight: bold;">std</span>::cout &lt;&lt; <span style="color: #5c3566;">"[client] send message to server"</span> &lt;&lt; <span style="color: #204a87; font-weight: bold;">std</span>::endl;
+  result = <span style="color: #204a87; font-weight: bold;">tcp</span>::recv(client, buffer, <span style="color: #346604;">sizeof</span>(buffer), 0);
+  <span style="color: #204a87; font-weight: bold;">std</span>::cout &lt;&lt; <span style="color: #5c3566;">"[client] recv from server:"</span> &lt;&lt; <span style="color: #204a87; font-weight: bold;">std</span>::string(buffer, result) &lt;&lt; <span style="color: #204a87; font-weight: bold;">std</span>::endl;
+
+  <span style="color: #204a87; font-weight: bold;">tcp</span>::shutdown(client, 2);
+  <span style="color: #346604;">return</span> 0;
+}
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc6b68c2" class="outline-4">
+<h4 id="orgc6b68c2"><span class="section-number-4">1.3.3</span> build and run</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<div class="org-src-container">
+<pre class="src src-makefile"><span style="color: #a40000;">build/tcp.o</span>: lib/tcp.h src/tcp.cc
+        g++ -c src/tcp.cc -o build/tcp.o
+
+<span style="color: #a40000;">target/server</span>: server.cc build/tcp.o
+        g++ -c server.cc -o build/server.o
+        g++ build/server.o build/tcp.o -o target/server
+<span style="color: #a40000;">target/client</span>: client.cc build/tcp.o
+        g++ -c client.cc -o build/client.o
+        g++ build/client.o build/tcp.o -o target/client
+
+<span style="color: #a40000;">clean</span>:
+        rm build/*
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org14bfce8" class="outline-4">
+<h4 id="org14bfce8"><span class="section-number-4">1.3.4</span> 运行结果</h4>
+<div class="outline-text-4" id="text-1-3-4">
+<div class="org-src-container">
+<pre class="src src-bash">&#10140;  socket target/server &amp;      
+[1] 10249
+&#10140;  socket target/client  
+[client] send message to server
+[server] recv from client: hello world
+[server] send done
+[client] recv from server:fuck you
+[1]  + 10249 done       target/server
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5481c88" class="outline-2">
+<h2 id="org5481c88"><span class="section-number-2">2</span> UDP 网络套接字</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+UDP 网络套接字程序的设计可以遵循上面的四个步骤吗？
+</p>
+
+<p>
+由于UDP不是面向连接的服务，其中
+ <b>数据发送端</b> 就像一个邮差
+ <b>数据接收端</b> 就像一个邮箱
+邮差会直接把信件放到邮箱里，收不收是邮箱主人的事，邮差不需要知道，四步骤中的
+<b>连接</b> 可以忽略了，那我们按照  
+</p>
+<ul class="org-ul">
+<li>部署</li>
+<li>传输</li>
+<li>关闭</li>
+</ul>
+<p>
+三个步骤来设计程序就行了
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge9688df" class="outline-2">
+<h2 id="orge9688df"><span class="section-number-2">3</span> 本地套接字</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+本地套接字有什么特殊的吗？
+没有啊，网络套接字的传输靠的是网络，本地套接字靠的是文件系统，只需要在创建套接字
+描述符的时候把两端套接字的 <i>domain</i> 改为 <i>AF_LOCAL</i> 就行了，
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Created: 2021-02-01 一 20:43</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
