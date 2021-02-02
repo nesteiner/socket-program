@@ -1,5 +1,7 @@
 #include "../lib/tcp.h"
+#include <asm-generic/socket.h>
 #include <memory>
+#include <sys/socket.h>
 
 int tcp::server(const char *ip, unsigned int port) {
   int sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -9,6 +11,10 @@ int tcp::server(const char *ip, unsigned int port) {
   address.sin_addr.s_addr = inet_addr(ip);
   address.sin_port = htons(port);
 
+  // reuse address
+  int on = 1;
+  setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
+  
   ::bind(sockfd, (struct sockaddr *)&address, sizeof(address));
   ::listen(sockfd, 5);
 
@@ -37,5 +43,7 @@ int tcp::connect(int sockfd, const char *ip, unsigned int port) {
 }
 
 
-
+void tcp::set_timeout(int connfd, struct timeval tv) {
+  setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof(tv));
+}
 

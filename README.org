@@ -1,28 +1,30 @@
 #+SEQ_TODO: REPORT(r) BUG(b) KNOWNCAUSE(k) | FIXED(f)
 #+SEQ_TODO: TODO(t) DOING(o) | DONE(d) CANCELED(c@/!)
-* Socket 套接字编程实战
-** DONE 基础部分[1/1]
-- [X] [tcp] lib
+* 套接字编程实战 Navigation
+** DONE 基础部分
+*** 代码部分
++ 测试代码
++ Makefile
 
-** TODO 套接字排错
+*** 文档
++ 为什么要这么写
++ MindMap
 
+** DOING 套接字排错[5/6]
+- [X] 有哪些错误
+- [X] 发生在什么时候
+- [X] 怎么发生的
+- [X] 如何解决
+- [X] 画个图表示一下
+- [ ] TCP流处理
 ** TODO 性能提升
 
-** TODO 文档[0/3]
-*** TODO TCP lib
-1. 怎么写的，有什么修改
-2. 为什么
-3. 补丁部分
-4. MindMap
-
-*** TODO TCP 排错
-1. 有哪些错误
-2. 发生在什么时候
-3. 怎么解决
-4. 字节序问题怎么处理
-
-*** TODO 性能提升
-
+** TODO 实验部分
+SCHEDULED: <2021-02-03 三>
+*** TCP流处理
+[[https://time.geekbang.org/column/article/132443][click me]]
+*** HTTP服务器
+[[https://github.com/tuvtran/project-based-learning#cc][click me]]
 ** 注意
 + 系统缓冲区 EAGAIN
 + 合并缓冲区

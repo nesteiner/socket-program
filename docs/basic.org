@@ -1,10 +1,11 @@
-#+TITLE: 学习套接字
-#+OPTIONS: toc:t num:3 H:4 ^:nil pri:t
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://gongzhitaao.org/orgcss/org.css"/>
+#+title: 学习套接字
+#+author: Steiner
+#+options: toc:t num:3 H:4 ^:nil pri:t
+#+html_head: <link rel="stylesheet" type="text/css" href="http://gongzhitaao.org/orgcss/org.css"/>
 
 * TCP 网络套接字
+[[file:./images/socket-basic.png]]
 
-TODO mindmap image here
 ** 说明
 *** 程序步骤
 TCP套接字程序大概有4个步骤，分别是  

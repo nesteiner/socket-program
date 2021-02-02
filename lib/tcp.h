@@ -1,4 +1,5 @@
 #pragma once
+#include <bits/types/struct_timeval.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
@@ -37,13 +38,11 @@ namespace tcp {
   const auto send = ::send;
   const auto recv = ::recv;
 
-  /* STUB another transport
-     how to use unique_ptr?
-     how to assign it ??
-  */
-
   // close
   const auto shutdown = ::shutdown;
+
+  // set timeout
+  void set_timeout(int connfd, struct timeval tv);
 };
 
-// PROBLEM how to use a function as another function
+
