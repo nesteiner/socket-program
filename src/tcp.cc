@@ -1,5 +1,4 @@
-#include "../lib/tcp.h"
-#include <asm-generic/socket.h>
+#include "lib/tcp.h"
 #include <memory>
 #include <sys/socket.h>
 

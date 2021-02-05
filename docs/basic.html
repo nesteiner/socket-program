@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-02-02 二 11:03 -->
+<!-- 2021-02-03 三 00:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>学习套接字</title>
@@ -235,112 +235,112 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgfac2cda">1. TCP 网络套接字</a>
+<li><a href="#orgc6ef717">1. TCP 网络套接字</a>
 <ul>
-<li><a href="#org31949eb">1.1. 说明</a>
+<li><a href="#orgbce54bc">1.1. 说明</a>
 <ul>
-<li><a href="#org8e41c73">1.1.1. 程序步骤</a></li>
-<li><a href="#org7b401b2">1.1.2. 项目结构</a></li>
+<li><a href="#orgae66aa8">1.1.1. 程序步骤</a></li>
+<li><a href="#org96bf11f">1.1.2. 项目结构</a></li>
 </ul>
 </li>
-<li><a href="#orgc22682a">1.2. 知识点说明</a>
+<li><a href="#org8145fbd">1.2. 知识点说明</a>
 <ul>
-<li><a href="#org6a4fb0e">1.2.1. 部署</a>
+<li><a href="#org84d28bb">1.2.1. 部署</a>
 <ul>
-<li><a href="#org2a2c145"><span class="done DONE">DONE</span> 部署服务端</a></li>
-<li><a href="#org073165c"><span class="done DONE">DONE</span> 部署客户端</a></li>
+<li><a href="#org992b508"><span class="done DONE">DONE</span> 部署服务端</a></li>
+<li><a href="#org2d97eaf"><span class="done DONE">DONE</span> 部署客户端</a></li>
 </ul>
 </li>
-<li><a href="#org6353478">1.2.2. 连接</a>
+<li><a href="#orgf352941">1.2.2. 连接</a>
 <ul>
-<li><a href="#org1cbc4db"><span class="done DONE">DONE</span> 服务端接收连接</a></li>
-<li><a href="#org658877f"><span class="done DONE">DONE</span> 客户端连接服务端</a></li>
+<li><a href="#org5d392d0"><span class="done DONE">DONE</span> 服务端接收连接</a></li>
+<li><a href="#org0fc805a"><span class="done DONE">DONE</span> 客户端连接服务端</a></li>
 </ul>
 </li>
-<li><a href="#org0ccff7e">1.2.3. 传输</a>
+<li><a href="#org778288d">1.2.3. 传输</a>
 <ul>
-<li><a href="#org856a2aa">发送数据</a></li>
-<li><a href="#orga9c2432">接收数据</a></li>
+<li><a href="#org42a5515">发送数据</a></li>
+<li><a href="#orgc0910b4">接收数据</a></li>
 </ul>
 </li>
-<li><a href="#orgab9a76c">1.2.4. 关闭</a></li>
+<li><a href="#org5b74a48">1.2.4. 关闭</a></li>
 </ul>
 </li>
-<li><a href="#org946ff77">1.3. 代码测试</a>
+<li><a href="#orga1ea23a">1.3. 代码测试</a>
 <ul>
-<li><a href="#org7ceec64">1.3.1. 服务端程序</a></li>
-<li><a href="#orgb65847f">1.3.2. 客户端程序</a></li>
-<li><a href="#orgb1b0eb4">1.3.3. build and run</a></li>
-<li><a href="#org62e594a">1.3.4. 运行结果</a></li>
+<li><a href="#orgebe9870">1.3.1. 服务端程序</a></li>
+<li><a href="#org32b0d9a">1.3.2. 客户端程序</a></li>
+<li><a href="#orgce948ab">1.3.3. build and run</a></li>
+<li><a href="#org839da69">1.3.4. 运行结果</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgd3179ab">2. UDP 网络套接字</a></li>
-<li><a href="#org13c6d12">3. 本地套接字</a></li>
+<li><a href="#orgebba067">2. UDP 网络套接字</a></li>
+<li><a href="#org818414f">3. 本地套接字</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgfac2cda" class="outline-2">
-<h2 id="orgfac2cda"><span class="section-number-2">1</span> TCP 网络套接字</h2>
+<div id="outline-container-orgc6ef717" class="outline-2">
+<h2 id="orgc6ef717"><span class="section-number-2">1</span> TCP 网络套接字</h2>
 <div class="outline-text-2" id="text-1">
 
 <div class="figure">
-<p><img src="./images/socket-basic.png" alt="socket-basic.png" />
+<p><img src="./images/socket-basic.png" alt="socket-basic.png" /><br />
 </p>
 </div>
 </div>
 
-<div id="outline-container-org31949eb" class="outline-3">
-<h3 id="org31949eb"><span class="section-number-3">1.1</span> 说明</h3>
+<div id="outline-container-orgbce54bc" class="outline-3">
+<h3 id="orgbce54bc"><span class="section-number-3">1.1</span> 说明</h3>
 <div class="outline-text-3" id="text-1-1">
 </div>
-<div id="outline-container-org8e41c73" class="outline-4">
-<h4 id="org8e41c73"><span class="section-number-4">1.1.1</span> 程序步骤</h4>
+<div id="outline-container-orgae66aa8" class="outline-4">
+<h4 id="orgae66aa8"><span class="section-number-4">1.1.1</span> 程序步骤</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
-TCP套接字程序大概有4个步骤，分别是  
+TCP套接字程序大概有4个步骤，分别是<br />
 </p>
 <ol class="org-ol">
-<li>部署 <b>deploy</b></li>
-<li>连接 <b>connect</b></li>
-<li>传输 <b>transport</b></li>
-<li>关闭 <b>shutdown</b></li>
+<li>部署 <b>deploy</b><br /></li>
+<li>连接 <b>connect</b><br /></li>
+<li>传输 <b>transport</b><br /></li>
+<li>关闭 <b>shutdown</b><br /></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org7b401b2" class="outline-4">
-<h4 id="org7b401b2"><span class="section-number-4">1.1.2</span> 项目结构</h4>
+<div id="outline-container-org96bf11f" class="outline-4">
+<h4 id="org96bf11f"><span class="section-number-4">1.1.2</span> 项目结构</h4>
 <div class="outline-text-4" id="text-1-1-2">
 <p>
-在本目录下，有
+在本目录下，有<br />
 </p>
 <ul class="org-ul">
-<li>lib/
+<li>lib/<br />
 <ul class="org-ul">
-<li>tcp.h</li>
+<li>tcp.h<br /></li>
 </ul></li>
-<li>src/
+<li>src/<br />
 <ul class="org-ul">
-<li>tcp.cc</li>
+<li>tcp.cc<br /></li>
 </ul></li>
-<li>client.cc</li>
-<li>server.cc</li>
-<li>Makefile</li>
+<li>client.cc<br /></li>
+<li>server.cc<br /></li>
+<li>Makefile<br /></li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-orgc22682a" class="outline-3">
-<h3 id="orgc22682a"><span class="section-number-3">1.2</span> 知识点说明</h3>
+<div id="outline-container-org8145fbd" class="outline-3">
+<h3 id="org8145fbd"><span class="section-number-3">1.2</span> 知识点说明</h3>
 <div class="outline-text-3" id="text-1-2">
 </div>
-<div id="outline-container-org6a4fb0e" class="outline-4">
-<h4 id="org6a4fb0e"><span class="section-number-4">1.2.1</span> 部署</h4>
+<div id="outline-container-org84d28bb" class="outline-4">
+<h4 id="org84d28bb"><span class="section-number-4">1.2.1</span> 部署</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
-要创建一个套接字描述符，需要调用
+要创建一个套接字描述符，需要调用<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-c++"><span style="color: #204a87;">int</span> <span style="color: #a40000;">socket</span>(<span style="color: #204a87;">int</span> <span style="color: #b35000;">domain</span>, <span style="color: #204a87;">int</span> <span style="color: #b35000;">type</span>, <span style="color: #204a87;">int</span> <span style="color: #b35000;">protocol</span>);
@@ -348,11 +348,11 @@ TCP套接字程序大概有4个步骤，分别是
 </div>
 </div>
 
-<div id="outline-container-org2a2c145" class="outline-5">
-<h5 id="org2a2c145"><span class="done DONE">DONE</span> 部署服务端</h5>
-<div class="outline-text-5" id="text-org2a2c145">
+<div id="outline-container-org992b508" class="outline-5">
+<h5 id="org992b508"><span class="done DONE">DONE</span> 部署服务端</h5>
+<div class="outline-text-5" id="text-org992b508">
 <p>
-这里做点简化，/bind/, <i>listen</i> 一条龙服务
+这里做点简化，/bind/, <i>listen</i> 一条龙服务<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-c++"><span style="color: #204a87;">int</span> <span style="color: #a40000;">server</span>(<span style="color: #346604;">const</span> <span style="color: #204a87;">char</span> * <span style="color: #b35000;">ip</span>, <span style="color: #204a87;">unsigned</span> <span style="color: #204a87;">int</span> <span style="color: #b35000;">port</span>);
@@ -375,9 +375,9 @@ TCP套接字程序大概有4个步骤，分别是
 </div>
 </div>
 </div>
-<div id="outline-container-org073165c" class="outline-5">
-<h5 id="org073165c"><span class="done DONE">DONE</span> 部署客户端</h5>
-<div class="outline-text-5" id="text-org073165c">
+<div id="outline-container-org2d97eaf" class="outline-5">
+<h5 id="org2d97eaf"><span class="done DONE">DONE</span> 部署客户端</h5>
+<div class="outline-text-5" id="text-org2d97eaf">
 <div class="org-src-container">
 <pre class="src src-c++"><span style="color: #204a87;">int</span> <span style="color: #a40000;">client</span>(<span style="color: #204a87;">int</span> <span style="color: #b35000;">domain</span>=AF_INET);
 
@@ -391,17 +391,17 @@ TCP套接字程序大概有4个步骤，分别是
 </div>
 </div>
 </div>
-<div id="outline-container-org6353478" class="outline-4">
-<h4 id="org6353478"><span class="section-number-4">1.2.2</span> 连接</h4>
+<div id="outline-container-orgf352941" class="outline-4">
+<h4 id="orgf352941"><span class="section-number-4">1.2.2</span> 连接</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <p>
-服务端接受套接字的连接，并生成一个 <i>新的套接符描述符</i> 来处理与客服端的数据交互  
-客户端向服务端发起连接，进行数据传输
+服务端接受套接字的连接，并生成一个 <i>新的套接符描述符</i> 来处理与客服端的数据交互<br />
+客户端向服务端发起连接，进行数据传输<br />
 </p>
 </div>
-<div id="outline-container-org1cbc4db" class="outline-5">
-<h5 id="org1cbc4db"><span class="done DONE">DONE</span> 服务端接收连接</h5>
-<div class="outline-text-5" id="text-org1cbc4db">
+<div id="outline-container-org5d392d0" class="outline-5">
+<h5 id="org5d392d0"><span class="done DONE">DONE</span> 服务端接收连接</h5>
+<div class="outline-text-5" id="text-org5d392d0">
 <div class="org-src-container">
 <pre class="src src-c++"><span style="color: #204a87;">int</span> <span style="color: #a40000;">accept</span>(<span style="color: #204a87;">int</span> <span style="color: #b35000;">serverfd</span>);
 
@@ -413,9 +413,9 @@ TCP套接字程序大概有4个步骤，分别是
 </div>
 </div>
 </div>
-<div id="outline-container-org658877f" class="outline-5">
-<h5 id="org658877f"><span class="done DONE">DONE</span> 客户端连接服务端</h5>
-<div class="outline-text-5" id="text-org658877f">
+<div id="outline-container-org0fc805a" class="outline-5">
+<h5 id="org0fc805a"><span class="done DONE">DONE</span> 客户端连接服务端</h5>
+<div class="outline-text-5" id="text-org0fc805a">
 <div class="org-src-container">
 <pre class="src src-c++"><span style="color: #204a87;">int</span> <span style="color: #a40000;">connect</span>(<span style="color: #204a87;">int</span> <span style="color: #b35000;">connfd</span>, <span style="color: #346604;">const</span> <span style="color: #204a87;">char</span> * <span style="color: #b35000;">ip</span>, <span style="color: #204a87;">unsigned</span> <span style="color: #204a87;">int</span> <span style="color: #b35000;">port</span>);
 
@@ -434,25 +434,25 @@ TCP套接字程序大概有4个步骤，分别是
 </div>
 </div>
 </div>
-<div id="outline-container-org0ccff7e" class="outline-4">
-<h4 id="org0ccff7e"><span class="section-number-4">1.2.3</span> 传输</h4>
+<div id="outline-container-org778288d" class="outline-4">
+<h4 id="org778288d"><span class="section-number-4">1.2.3</span> 传输</h4>
 <div class="outline-text-4" id="text-1-2-3">
 <p>
-连接好服务端和客户端后，再是进行双方的数据传输
+连接好服务端和客户端后，再是进行双方的数据传输<br />
 </p>
 </div>
-<div id="outline-container-org856a2aa" class="outline-5">
-<h5 id="org856a2aa">发送数据</h5>
-<div class="outline-text-5" id="text-org856a2aa">
+<div id="outline-container-org42a5515" class="outline-5">
+<h5 id="org42a5515">发送数据</h5>
+<div class="outline-text-5" id="text-org42a5515">
 <div class="org-src-container">
 <pre class="src src-c++"><span style="color: #346604;">const</span> <span style="color: #346604;">auto</span> send = ::send;
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orga9c2432" class="outline-5">
-<h5 id="orga9c2432">接收数据</h5>
-<div class="outline-text-5" id="text-orga9c2432">
+<div id="outline-container-orgc0910b4" class="outline-5">
+<h5 id="orgc0910b4">接收数据</h5>
+<div class="outline-text-5" id="text-orgc0910b4">
 <div class="org-src-container">
 <pre class="src src-c++"><span style="color: #346604;">const</span> <span style="color: #346604;">auto</span> recv = ::recv;
 </pre>
@@ -460,11 +460,11 @@ TCP套接字程序大概有4个步骤，分别是
 </div>
 </div>
 </div>
-<div id="outline-container-orgab9a76c" class="outline-4">
-<h4 id="orgab9a76c"><span class="section-number-4">1.2.4</span> 关闭</h4>
+<div id="outline-container-org5b74a48" class="outline-4">
+<h4 id="org5b74a48"><span class="section-number-4">1.2.4</span> 关闭</h4>
 <div class="outline-text-4" id="text-1-2-4">
 <p>
-结束两端的交互后，可以把套接字关闭，这里不用 <b>close</b> ，而用 <b>shutdown</b> 
+结束两端的交互后，可以把套接字关闭，这里不用 <b>close</b> ，而用 <b>shutdown</b> <br />
 </p>
 <div class="org-src-container">
 <pre class="src src-c++"><span style="color: #346604;">const</span> <span style="color: #346604;">auto</span> shutdown = ::shutdwon;
@@ -475,12 +475,12 @@ TCP套接字程序大概有4个步骤，分别是
 </div>
 
 
-<div id="outline-container-org946ff77" class="outline-3">
-<h3 id="org946ff77"><span class="section-number-3">1.3</span> 代码测试</h3>
+<div id="outline-container-orga1ea23a" class="outline-3">
+<h3 id="orga1ea23a"><span class="section-number-3">1.3</span> 代码测试</h3>
 <div class="outline-text-3" id="text-1-3">
 </div>
-<div id="outline-container-org7ceec64" class="outline-4">
-<h4 id="org7ceec64"><span class="section-number-4">1.3.1</span> 服务端程序</h4>
+<div id="outline-container-orgebe9870" class="outline-4">
+<h4 id="orgebe9870"><span class="section-number-4">1.3.1</span> 服务端程序</h4>
 <div class="outline-text-4" id="text-1-3-1">
 <div class="org-src-container">
 <pre class="src src-c++"><span style="color: #346604;">const</span> <span style="color: #204a87;">int</span> <span style="color: #b35000;">buffer_size</span> = 1024;
@@ -508,8 +508,8 @@ TCP套接字程序大概有4个步骤，分别是
 </div>
 </div>
 </div>
-<div id="outline-container-orgb65847f" class="outline-4">
-<h4 id="orgb65847f"><span class="section-number-4">1.3.2</span> 客户端程序</h4>
+<div id="outline-container-org32b0d9a" class="outline-4">
+<h4 id="org32b0d9a"><span class="section-number-4">1.3.2</span> 客户端程序</h4>
 <div class="outline-text-4" id="text-1-3-2">
 <div class="org-src-container">
 <pre class="src src-c++"><span style="color: #346604;">const</span> <span style="color: #204a87;">int</span> <span style="color: #b35000;">buffer_size</span> = 1024;
@@ -538,8 +538,8 @@ TCP套接字程序大概有4个步骤，分别是
 </div>
 </div>
 </div>
-<div id="outline-container-orgb1b0eb4" class="outline-4">
-<h4 id="orgb1b0eb4"><span class="section-number-4">1.3.3</span> build and run</h4>
+<div id="outline-container-orgce948ab" class="outline-4">
+<h4 id="orgce948ab"><span class="section-number-4">1.3.3</span> build and run</h4>
 <div class="outline-text-4" id="text-1-3-3">
 <div class="org-src-container">
 <pre class="src src-makefile"><span style="color: #a40000;">build/tcp.o</span>: lib/tcp.h src/tcp.cc
@@ -559,8 +559,8 @@ TCP套接字程序大概有4个步骤，分别是
 </div>
 </div>
 </div>
-<div id="outline-container-org62e594a" class="outline-4">
-<h4 id="org62e594a"><span class="section-number-4">1.3.4</span> 运行结果</h4>
+<div id="outline-container-org839da69" class="outline-4">
+<h4 id="org839da69"><span class="section-number-4">1.3.4</span> 运行结果</h4>
 <div class="outline-text-4" id="text-1-3-4">
 <div class="org-src-container">
 <pre class="src src-bash">&#10140;  socket target/server &amp;      
@@ -579,45 +579,45 @@ TCP套接字程序大概有4个步骤，分别是
 </div>
 </div>
 
-<div id="outline-container-orgd3179ab" class="outline-2">
-<h2 id="orgd3179ab"><span class="section-number-2">2</span> UDP 网络套接字</h2>
+<div id="outline-container-orgebba067" class="outline-2">
+<h2 id="orgebba067"><span class="section-number-2">2</span> UDP 网络套接字</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-UDP 网络套接字程序的设计可以遵循上面的四个步骤吗？
+UDP 网络套接字程序的设计可以遵循上面的四个步骤吗？<br />
 </p>
 
 <p>
-由于UDP不是面向连接的服务，其中
- <b>数据发送端</b> 就像一个邮差
- <b>数据接收端</b> 就像一个邮箱
-邮差会直接把信件放到邮箱里，收不收是邮箱主人的事，邮差不需要知道，四步骤中的
-<b>连接</b> 可以忽略了，那我们按照  
+由于UDP不是面向连接的服务，其中<br />
+ <b>数据发送端</b> 就像一个邮差<br />
+ <b>数据接收端</b> 就像一个邮箱<br />
+邮差会直接把信件放到邮箱里，收不收是邮箱主人的事，邮差不需要知道，四步骤中的<br />
+<b>连接</b> 可以忽略了，那我们按照<br />
 </p>
 <ul class="org-ul">
-<li>部署</li>
-<li>传输</li>
-<li>关闭</li>
+<li>部署<br /></li>
+<li>传输<br /></li>
+<li>关闭<br /></li>
 </ul>
 <p>
-三个步骤来设计程序就行了
+三个步骤来设计程序就行了<br />
 </p>
 </div>
 </div>
 
-<div id="outline-container-org13c6d12" class="outline-2">
-<h2 id="org13c6d12"><span class="section-number-2">3</span> 本地套接字</h2>
+<div id="outline-container-org818414f" class="outline-2">
+<h2 id="org818414f"><span class="section-number-2">3</span> 本地套接字</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-本地套接字有什么特殊的吗？
-没有啊，网络套接字的传输靠的是网络，本地套接字靠的是文件系统，只需要在创建套接字
-描述符的时候把两端套接字的 <i>domain</i> 改为 <i>AF_LOCAL</i> 就行了，
+本地套接字有什么特殊的吗？<br />
+没有啊，网络套接字的传输靠的是网络，本地套接字靠的是文件系统，只需要在创建套接字<br />
+描述符的时候把两端套接字的 <i>domain</i> 改为 <i>AF_LOCAL</i> 就行了，<br />
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Steiner</p>
-<p class="date">Created: 2021-02-02 二 11:03</p>
+<p class="date">Created: 2021-02-03 三 00:35</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

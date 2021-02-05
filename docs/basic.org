@@ -1,6 +1,6 @@
 #+title: 学习套接字
 #+author: Steiner
-#+options: toc:t num:3 H:4 ^:nil pri:t
+#+options: toc:t num:3 H:4 ^:nil pri:t \n:t
 #+html_head: <link rel="stylesheet" type="text/css" href="http://gongzhitaao.org/orgcss/org.css"/>
 
 * TCP 网络套接字
@@ -16,9 +16,9 @@ TCP套接字程序大概有4个步骤，分别是
 *** 项目结构
 在本目录下，有
 + lib/
-  + tcp.h
+  - tcp.h
 + src/
-  + tcp.cc
+  - tcp.cc
 + client.cc
 + server.cc
 + Makefile

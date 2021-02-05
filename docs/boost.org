@@ -1,0 +1,13 @@
+#+title: 套接字性能提升
+#+author: Steiner
+#+options: \n:t 
+#+SEQ_TODO: TODO(t) DOING(o) | DONE(d) CANCELED(c@/!)
+* 套接字性能提升
+** IO 多路复用
+*** [[file:./poll.org][Poll]]
+
+** 多线程并发
+
+** 异步
+
+** 非阻塞

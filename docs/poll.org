@@ -1,0 +1,32 @@
+#+options: \n:t
+
+* 使用 *Poll* 来进行多路复用
+
+** 结构体
+#+BEGIN_SRC c++
+  struct pollfd {
+    int   fd;         /* file descriptor */
+    short events;     /* requested events */
+    short revents;    /* returned events */
+  };
+#+END_SRC
+
+** 函数定义
+#+BEGIN_SRC c++
+  int poll(struct pollfd *fds, nfds_t nfds, int timeout);
+#+END_SRC
+
+其中 /*fds/ 为 /struct pollfd/ 数组，/nfds/ 为数组长度
+** 注册事件
+首先需要 /fd > 0/
+然后是设置`events`事件，有
++ 读
+  + POLLIN
++ 写
+  + POLLOUT
++ 错误
+  + POLLERR
+** 检查事件
+检查一个事件的发生，只需查看这个 /pollfd/ 结构的 /revent/
+判断事件发生的类型用 *&* ， __if(revent & POLLIN)__
+若一起处理 __ if (event_set[i].revents & (POLLRDNORM | POLLERR))__
