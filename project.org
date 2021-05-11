@@ -1,5 +1,10 @@
 #+SEQ_TODO: TODO(t) DOING(o) | DONE(d) CANCELED(c@/!)
 * Project
+** 代码文件
+*** [[file:./nonblock][非阻塞]]
+*** select
+*** poll
+*** epoll
 ** 注意
 + 系统缓冲区 EAGAIN
 + 合并缓冲区
@@ -22,13 +27,23 @@
 - [X] 画个图表示一下
 - [X] TCP流处理
 ** DOING 正在处理
-*** 性能提升[0/4]
-- [ ] select and poll
-- [ ] nonblocking
+*** 性能提升[2/5]
+- [X] select and poll
+- [X] nonblocking
 - [ ] epoll 
 - [ ] combine 
-
-*** PROBLEM[0/4]
+- [ ] 线程分发
+*** 实验程序[4/7]
+- [X] loop server
+- [X] select 
+- [X] poll 代码
+- [X] epoll level-trigger server
+- [ ] epoll edge-trigger
+- [ ] non-block
+*** 草稿文档
+- [X] select and poll
+- [ ] non-block
+** PROBLEM[0/4]
 - [ ] where can you do the boost
 - [ ] how do they work
 - [ ] where do they solve at
@@ -41,9 +56,43 @@
   + 异步
   + 非阻塞
 
-*** 实验程序[2/4]
-- [X] loop server
-- [X] select 
-- [ ] poll 代码
-- [ ] epoll
 
+* Poll server
+** 异常功能
+*** 无需退出
+*** 继续程序
+** 错误原因
+*** 部署
+*** 连接
+*** 传输
+*** 关闭
+** 最简程序
++ listen_fd: block
++ connfd: block
+[[file:./server/epoll.cc][write with epoll]]
+[[file:./server/poll.cc][write with poll]]
+
+* [[file:./docs/multiplex.org][文档编写]]
+
+** HTTP服务器设计
+[[file:./docs/note.org][笔记]]
+
+** 非阻塞 与 多路复用[3/4]
+- [X] [[file:./server/poll2.cc][poll 非阻塞]]
+- [X] [[file:./server/epoll2.cc][epoll 非阻塞LT模式]]
+  改写： accept <- while 接收: 没个吊用
+- [ ] epoll 非阻塞ET模式
+- [X] [[file:./docs/multiplex.org][简单的多路复用程序]]
+
+** 水平触发 与 边缘触发 
+
+
+* TODO 非阻塞程序 编写
++ write/read 传输
++ connect/accept 连接
++ 用 epoll 还是 poll
++ 怎么处理可写事件 ==> 注册写事件
+
+* Problem
++ write 与 read 返回值 差异， 关系 ？
++ 超时事件检测

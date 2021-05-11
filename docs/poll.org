@@ -1,32 +1,117 @@
 #+options: \n:t
 
-* 使用 *Poll* 来进行多路复用
+* 多路复用
+** 注意
+*** 什么是可读事件
+缓冲区足够，调用读不会阻塞
+*** 什么是可写事件
+缓冲区足够，调用写不会阻塞
+** 编程逻辑
+*** 注册
+注册 /field desciptor/
+注册 /event/ ， 代表读，写，错误
 
-** 结构体
+装载进特殊的结构体对象
+*** 监听
+等待事件发生
+*** 处理 
+通过轮询查看发生的事件
+
+** Select 
+*** 注册
+**** 数据
+fd_set
+**** 操作
+1. FD_ZERO
+2. FD_SET
+3. FD_CLR
+*** 监听
+/select(maxnum, readmask, writemask, errormask, timeout)/
+*** 处理
+**** 检测
+#+BEGIN_SRC c++
+  FD_ISSET(fd, &readmask)
+#+END_SRC
+
+**** 重置
+#+BEGIN_SRC c++
+  readmask = allread
+#+END_SRC
+why?
+副作用，重置
+
+** Poll
+*** 注册
 #+BEGIN_SRC c++
   struct pollfd {
-    int   fd;         /* file descriptor */
-    short events;     /* requested events */
-    short revents;    /* returned events */
+    int fd;
+    short events;
+    short revents;
   };
 #+END_SRC
 
-** 函数定义
+注册进 fd, events
+**tips**
+忽略 *fd < 0* 的情况
+
+**** 读
+POLLIN
+**** 写
+POLLOUT
+**** 错误
+POLLERR
+
+*** 监听
 #+BEGIN_SRC c++
   int poll(struct pollfd *fds, nfds_t nfds, int timeout);
 #+END_SRC
 
-其中 /*fds/ 为 /struct pollfd/ 数组，/nfds/ 为数组长度
-** 注册事件
-首先需要 /fd > 0/
-然后是设置`events`事件，有
+将 /struct pollfd/ 数组传递给 /poll/ 函数，/poll/ 会根据相应的
+fd 设置 /revents/ 字段
+*** 处理
+1. /fd > 0/
+2. 检查 /revents/
+3. 忽略 设置 /fd = -1/
+** Epoll
+*** 注册
+**** 结构体
+#+BEGIN_SRC c++
+  struct epoll_event {
+    int events;
+    epoll_data_t data;
+  };
+#+END_SRC
+
+1. 首先创建 /epoll/ 描述符，/efd/
+2. 通过 /epoll_ctl/ 向 /efd/ 注册 监听的 /fd/ 与 /events/
+
+**** 事件
 + 读
-  + POLLIN
+  + EPOLLIN
 + 写
-  + POLLOUT
+  + EPOLLOUT
 + 错误
-  + POLLERR
-** 检查事件
-检查一个事件的发生，只需查看这个 /pollfd/ 结构的 /revent/
-判断事件发生的类型用 *&* ， __if(revent & POLLIN)__
-若一起处理 __ if (event_set[i].revents & (POLLRDNORM | POLLERR))__
+  + EPOLLERR
+*** 监听
+1. 函数调用
+#+BEGIN_SRC c++
+  int epoll_wait(int epfd, struct epoll_event *events,
+                 int maxevents, int timeout);
+#+END_SRC
+2. 返回值 /n/
+3. 装载所有活动对象到 /events/
+*** 处理
+1. /events/ 装载
+2. 通过 /events[i].events/ 事件监听
+3. 通过 /events[i].data.fd/ 查看活动描述符
+*** 疑问
+**** 死循环
++ 及时删除不需要的文件描述符
++ 下次循环发现活动，没有删除，/shutdown/ 了也不好使，因为还是检测到了
++ 可否使用边缘触发，来忽略这种情况
+
+**** 工作机制
++ 装载入 /events/
++ 通过返回值判断多少活动
++ 通过数组处理事件
+

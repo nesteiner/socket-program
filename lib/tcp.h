@@ -43,6 +43,10 @@ namespace tcp {
 
   // set timeout
   void set_timeout(int connfd, struct timeval tv);
+
+  // MODULE nonblocking part
+  int make_nonblocking(int connfd);
+  int writen(int fd, const void * data, int n);
 };
 
 

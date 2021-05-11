@@ -1,0 +1,17 @@
+* 非阻塞
+** 什么是非阻塞
+** 作用在哪
+*** deploy
+
+**** accept
+**** connect
+
+*** transport
+**** send
+**** recv
+*** 有什么不同
+
+** 与多路复用组合
+
+* 给老子用MindMap先画完再写啊，明天的任务就把 nonblock 和 epoll 弄完好了
+别忘了死循环

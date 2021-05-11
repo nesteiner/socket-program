@@ -37,9 +37,10 @@
 也可以在轮询的时候设置超时，这里先不做探讨
 
 然后我该怎么知道是发生了超时事件 ？？
-此时/read/ 返回 -1， 并且 /errno/ 为 /EAGAIN/ 或 /EWOULDBLOCK/
-**tips**
-鬼知道这两个错误码什么意思，先用着好了
++ read -> -1
++ /errno == EAGAIN || errno == EWOULDBLOCK/
++ event ?? EPOLLHUP, EPOLLERR
+
 
 *** 数据中断
 此时维持双方数据传输的通道断裂，可能是由于程序崩溃引起的
